@@ -1,0 +1,37 @@
+.boxCorreto {
+    width: 300px;
+    height: 40px;
+    background-color: #32CD32;
+}
+.boxIconeCorreto {
+    width: 100px;
+    height: 40px;
+    text-align: center;
+    margin: 0;
+}
+.boxMensagemCorreto {
+    width: 200px;
+    height: 40px;
+    text-align: center;
+    margin: 0 100px;
+    margin-top: -30px;
+}
+
+.boxAlerta {
+    width: 300px;
+    height: 40px;
+    background-color: #FFFF00;
+}
+.boxIconeAlerta {
+    width: 100px;
+    height: 40px;
+    text-align: center;
+    margin: 0;
+}
+.boxMensagemAlerta {
+    width: 200px;
+    height: 40px;
+    text-align: center;
+    margin: 0 100px;
+    margin-top: -30px;
+}
