@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<!--Import Google Icon Font-->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet" />
+<!--Import materialize.css-->
+<link type="text/css" rel="stylesheet"
+	href="materialize/css/materialize.min.css" media="screen,projection" />
+<!--Let browser know website is optimized for mobile-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<title>Financeiro</title>
+</head>
+<body>
+	<h2
+		style="background-color: #8B4513; margin: 0; text-align: right; color: white; font-family: sans-serif; font-style: italic;">
+		Financeiro</h2>
+	<div class="container input-field col s12" style="margin-top: 30px;">
+		<select id="mes" name="mes" onchange="mesSelecionado()">
+			<option th:each="mes : ${meses}" th:value="${mes.codigo}"
+				th:text="${mes}" th:selected="${mes.codigo == mesAtual.codigo}">
+			</option>
+		</select> <label>Selecione o mes</label>
+	</div>
+	<div class="container" style="margin-top: 50px;">
+
+		<ul class="collapsible">
+			<li>
+				<div class="collapsible-header"
+					style="color: blue; font-weight: bolder;">
+					<i class="material-icons" style="color: blue;">attach_money</i>RENDAS
+					<span class="badge" th:text="${totalRendas}"></span>
+				</div>
+				<div class="collapsible-body">
+					<table>
+						<thead>
+							<tr style="font-weight: bolder;">
+								<td style="width: 100px;"><a href="/novaRenda"
+									style="cursor: pointer;" title="nova renda"> <i
+										class="material-icons" style="color: green;">add_circle</i>
+								</a></td>
+								<td>Descrição</td>
+								<td>Data</td>
+								<td>Valor</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="renda : ${rendas}">
+								<td><a href="#" style="cursor: pointer;" title="editar"
+									th:onclick="'javascript:atualizarRegistro(' + ${renda.id} + ');'">
+										<i class="material-icons" style="color: blue;">create</i>
+								</a> <a href="#" style="cursor: pointer;" title="excluir"
+									th:onclick="'javascript:excluirRegistro(' + ${renda.id} + ');'">
+										<i class="material-icons" style="color: red;">delete</i>
+								</a></td>
+								<td><span th:text="${renda.descr}"></span></td>
+								<td><span th:text="${renda.getDataFormatada()}"></span></td>
+								<td><span th:text="${renda.getValorFormatado()}"></span></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</li>
+			<li>
+				<div class="collapsible-header"
+					style="color: red; font-weight: bolder;">
+					<i class="material-icons" style="color: red;">money_off</i>DÍVIDAS
+					<span class="badge" th:text="${totalDividas}"></span>
+				</div>
+				<div class="collapsible-body">
+					<table>
+						<thead>
+							<tr style="font-weight: bolder;">
+								<td style="width: 100px;"><a href="/novaDivida"
+									style="cursor: pointer;" title="nova divida"> <i
+										class="material-icons" style="color: green;">add_circle</i>
+								</a></td>
+								<td>Descrição</td>
+								<td>Data</td>
+								<td>Valor</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="divida : ${dividas}">
+								<td><a href="#" style="cursor: pointer;" title="editar"
+									th:onclick="'javascript:atualizarRegistro(' + ${divida.id} + ');'">
+										<i class="material-icons" style="color: blue;">create</i>
+								</a> <a href="#" style="cursor: pointer;" title="excluir"
+									th:onclick="'javascript:excluirRegistro(' + ${divida.id} + ');'">
+										<i class="material-icons" style="color: red;">delete</i>
+								</a> <span th:if="${divida.situacao == 0}"> <a style="cursor: pointer; color: green;"
+										id="icone-divida-paga" title="Paga"
+										th:onclick="'javascript: atualizarSituacaoDivida('+${divida.id}+')'"><i
+											class="material-icons">check</i> </a>
+								</span> <span th:unless="${divida.situacao == 0}"> <a style="cursor: pointer; color: red;"
+										id="icone-divida-devedor" title="Devedor"
+										th:onclick="'javascript: atualizarSituacaoDivida('+${divida.id}+')'"><i
+											class="material-icons">close</i> </a>
+								</span></td>
+								<td><span th:text="${divida.descr}"></span></td>
+								<td><span th:text="${divida.getDataFormatada()}"></span></td>
+								<td><span th:text="${divida.getValorFormatado()}"></span></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</li>
+			<li>
+				<div class="collapsible-header"
+					style="color: green; font-weight: bolder;">
+					<i class="material-icons" style="color: green;">info</i>INFORMAÇÕES
+					<span class="badge">1</span>
+				</div>
+				<div class="collapsible-body">
+					<table>
+						<thead>
+							<tr style="font-weight: bolder;">
+								<td>Mes atual</td>
+								<td>Total rendas</td>
+								<td>Total dívidas</td>
+								<td>Total pago</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><span th:text="${mesEscolhido.descricao}"></span></td>
+								<td><span th:text="${vlRendas}"></span></td>
+								<td><span th:text="${vlDividas}"></span></td>
+								<td><span th:text="${vlPago}"></span></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</li>
+		</ul>
+	</div>
+	<!--Mostrar conteudo de cada linha-->
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<script>
+		$(document).ready(function() {
+			$('.collapsible').collapsible();
+		});
+		$(document).ready(function() {
+			$('select').formSelect();
+		});
+	</script>
+	<script src="js/TelaPrincipalController.js"></script>
+	<script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+</body>
+</html>

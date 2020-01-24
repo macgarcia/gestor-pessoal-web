@@ -36,25 +36,4 @@ public class LoginController {
 		return "telaNovoUsuario";
 	}	
 	
-	@PostMapping(value = "/salvarUsuario")
-	public String salvarNovoUsuario(Usuario usuario, RedirectAttributes ra) {
-		String msg = null;
-		boolean verificarApi = true;
-		if (usuario.getLogin().trim().isEmpty()) {
-			msg = "Informe o login";
-			verificarApi = false;
-		} else if (usuario.getSenha().trim().isEmpty()) {
-			msg = "Informe a senha";
-			verificarApi = false;
-		}
-		if (verificarApi) {
-			Usuario novoUsuario = this.loginComponent.salvarUsuario(usuario);
-			if (novoUsuario.getId() != null) {
-				return "redirect:/";
-			}
-		}
-		ra.addFlashAttribute("codigo", "2");
-		ra.addFlashAttribute("mensagem", msg);
-		return "redirect:/novo";
-	}
 }

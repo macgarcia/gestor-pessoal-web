@@ -1,16 +1,37 @@
 <!DOCTYPE html>
-<html xmlns:th="http://thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-	<head>
-		<!--Import Google Icon Font-->
-      	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
-      	<!--Import materialize.css-->
-      	<link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css"  media="screen,projection"/>
-      	<!--Let browser know website is optimized for mobile-->
-      	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-		<meta charset="UTF-8">
-		<title>Gestor pessoal</title>
-	</head>
-	<body>
-		<h1>Logado!</h1>
-	</body>
+<html xmlns:th="http://thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<!--Import Google Icon Font-->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet" />
+<!--Import materialize.css-->
+<link type="text/css" rel="stylesheet"
+	href="materialize/css/materialize.min.css" media="screen,projection" />
+<!--Let browser know website is optimized for mobile-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<title>Gestor pessoal</title>
+</head>
+<body>
+	<h2 style="background-color: #8B0000; margin: 0; 
+		text-align: right; color: white; 
+		font-family: sans-serif; font-style: italic;">
+		Gestor pessoal
+	</h2>
+	<div class = "row container" style="margin-top: 50px;">
+		<div class="col s6">
+			<label>Financeiro</label><br/>
+			<a href="/financas" title="Financeiro">
+				<i class="large material-icons" style="color: #8B4513;">assignment</i>
+			</a>
+		</div>
+		<div class="col s6">
+			<label>Anotações</label><br/>
+			<a href="/notas" title="Anotações">
+				<i class="large material-icons" style="color: #FFFF00;">content_paste</i>
+			</a>
+		</div>
+	</div>
+</body>
 </html>

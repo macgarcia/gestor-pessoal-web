@@ -16,8 +16,8 @@ public class WebConsumer {
 		this.client = Client.create();
 	}
 
-	public String getDados(String endPonit) {
-		this.web = client.resource(endPonit);
+	public String getDados(String endPoint) {
+		this.web = client.resource(endPoint);
 		ClientResponse response = this.web.type("application/json").get(ClientResponse.class);
 		String result = response.getEntity(String.class);
 		return result;
