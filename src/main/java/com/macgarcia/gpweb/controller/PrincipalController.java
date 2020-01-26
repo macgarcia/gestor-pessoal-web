@@ -71,14 +71,7 @@ public class PrincipalController {
 		Collections.sort(this.rendas, Comparator.comparing(Renda::getId));
 		Collections.sort(this.dividas, Comparator.comparing(Divida::getId));
 		List<Mes> meses = new Ferramentas().getMeses();
-		mv.addObject("meses", meses);
-		mv.addObject("mesAtual", this.getMesAtual());
-		mv.addObject("rendas", this.rendas);
-		mv.addObject("totalRendas", this.rendas.size());
-		mv.addObject("dividas", this.dividas);
-		mv.addObject("totalDividas", this.dividas.size());
-		
-		mv.addObject("mesEscolhido", this.getMesAtual());
+
 		AtomicReference<Double> vlRendas = new AtomicReference<Double>(0d);
 		this.rendas.forEach(r -> vlRendas.set(vlRendas.get() + r.getValor()));
 		
@@ -90,7 +83,13 @@ public class PrincipalController {
 				vlPago.set(vlPago.get() + d.getValor());
 			}
 		});
-		
+		mv.addObject("meses", meses);
+		mv.addObject("mesAtual", this.getMesAtual());
+		mv.addObject("rendas", this.rendas);
+		mv.addObject("totalRendas", this.rendas.size());
+		mv.addObject("dividas", this.dividas);
+		mv.addObject("totalDividas", this.dividas.size());
+		mv.addObject("mesEscolhido", this.getMesAtual());
 		mv.addObject("vlRendas", String.format("%.2f", vlRendas.get()));
 		mv.addObject("vlDividas", String.format("%.2f", vlDividas.get()));
 		mv.addObject("vlPago", String.format("%.2f", vlPago.get()));

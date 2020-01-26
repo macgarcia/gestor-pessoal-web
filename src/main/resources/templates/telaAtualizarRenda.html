@@ -11,30 +11,31 @@
 <!--Let browser know website is optimized for mobile-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta charset="UTF-8">
-<title>Nova renda</title>
+<title>Atualizar renda</title>
 </head>
 <body>
 	<h2 style="background-color: blue; margin: 0; 
 		text-align: right; color: white; 
 		font-family: sans-serif; font-style: italic;">
-		Nova renda
+		Atualizar renda
 	</h2>
 	<div class = "container" style="margin-top: 50px;">
 		<input id="idUsuario" type="hidden" th:value="*{idUsuario}">
-		<input id="idRenda" type="hidden" th:value="0">
+		<input id="idRenda" type="hidden" th:value="*{renda.id}">
 		<div class = "row">
 			<div class = "input-field col s12">
-				<input type="text" id="descr" name="descr"/>
+				<input type="text" id="descr" name="descr" th:value="*{renda.descr}"/>
 				<label for="descr">Descrição</label>
 			</div>
 		</div>
 		<div class="row">
 			<div class="input-field col s6">
-				<input type="date" id="data" name="data"/>
+				<input type="date" id="data" name="data" th:value="*{renda.getDataFormatadaCompleta()}"/>
 				<label for="data">Data</label>
 			</div>
 			<div class="input-field col s6">
-				<input type="text" id="valor" name="valor" onKeyPress="return(moeda(this,'.',',',event))">
+				<input type="text" id="valor" name="valor" th:value="*{renda.getValorFormatado()}" 
+					onKeyPress="return(moeda(this,'.',',',event))"/>
 				<label for="valor">Valor</label>
 			</div>
 		</div>

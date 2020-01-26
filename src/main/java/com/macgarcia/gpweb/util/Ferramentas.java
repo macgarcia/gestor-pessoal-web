@@ -1,5 +1,7 @@
 package com.macgarcia.gpweb.util;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -61,5 +63,33 @@ public class Ferramentas {
     public Mes getMes(Integer codigo) {
     	String mesExtenso = this.getMesPorExtenso(codigo);
     	return new Mes(codigo, mesExtenso);
+    }
+    
+    /***
+     * Método que devolde um item da lista.
+     * @param list
+     * @param classe
+     * @param id
+     * @return 
+     */
+    public Object recuperaItemDaLista(List<?> list, Class classe, Long id) {
+        Object devolver = null;
+        int index = 0;
+        int tamanho = list.size();
+        boolean achou = false;
+        try {
+            Method method = classe.getMethod("getId");
+            while (!achou && index < tamanho) {
+                Object obj = list.get(index);
+                if (method.invoke(obj).equals(id)) {
+                    achou = true;
+                    devolver = obj;
+                }
+                index++;
+            }
+        } catch (NoSuchMethodException | SecurityException | IllegalAccessException 
+                | IllegalArgumentException | InvocationTargetException e) {
+        }
+        return devolver;
     }
 }

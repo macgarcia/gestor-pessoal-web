@@ -61,13 +61,16 @@ function iniciar() {
 }
 
 function recuperarValores(renda) {
-	renda.id = null;
+	renda.id = document.getElementById("idRenda").value;
 	renda.descr = document.getElementById("descr").value;
 	renda.data = document.getElementById("data").value;
 	renda.valor = document.getElementById("valor").value;
 	renda.valor = renda.valor.replace(",", ".");
 	
 	idUsuario = document.getElementById("idUsuario").value;
+	if (renda.id == 0) {
+		renda.id = null;
+	}
 }
 
 function validar(renda) {
@@ -88,6 +91,12 @@ function validar(renda) {
 }
 
 function consumirApi(renda) {
+	var msg = "";
+	if (renda.id != null) {
+		msg = "Renda atualizada com sucesso";
+	} else {
+		msg = "Renda salva com sucesso";
+	}
 	var request = new XMLHttpRequest();
 	var endPoint = "https://api-gp.herokuapp.com/renda/novaRenda/" + idUsuario;
 	request.open("POST", endPoint, true);
@@ -95,12 +104,10 @@ function consumirApi(renda) {
 	request.onload = function() {
 	    if (request.status == 200) {
 	    	var renda = JSON.parse(request.responseText);
-	    	if (renda.id != null) {
-	    		alert("Registro inserido com sucesso");
-	    	}
+	    	alert(msg);
 	    	window.location.replace("/financas");
 	    } else {
-	    	alert("Já existe um usuário com este login");
+	    	alert("Erro ao savar...");
 	    }
 	}
 	var json = JSON.stringify(renda);

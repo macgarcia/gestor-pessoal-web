@@ -56,10 +56,10 @@
 						<tbody>
 							<tr th:each="renda : ${rendas}">
 								<td><a href="#" style="cursor: pointer;" title="editar"
-									th:onclick="'javascript:atualizarRegistro(' + ${renda.id} + ');'">
+									th:onclick="'javascript:atualizarRenda(' + ${renda.id} + ');'">
 										<i class="material-icons" style="color: blue;">create</i>
 								</a> <a href="#" style="cursor: pointer;" title="excluir"
-									th:onclick="'javascript:excluirRegistro(' + ${renda.id} + ');'">
+									th:onclick="'javascript:excluirRenda(' + ${renda.id} + ');'">
 										<i class="material-icons" style="color: red;">delete</i>
 								</a></td>
 								<td><span th:text="${renda.descr}"></span></td>

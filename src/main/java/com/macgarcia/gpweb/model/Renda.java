@@ -49,6 +49,10 @@ public class Renda implements Serializable {
 		return new SimpleDateFormat("MM/yyyy").format(this.data);
 	}
 	
+	public String getDataFormatadaCompleta() {
+		return new SimpleDateFormat("yyyy-MM-dd").format(this.data);
+	}
+	
 	public String getValorFormatado() {
 		return String.format("%.2f", this.valor);
 	}
