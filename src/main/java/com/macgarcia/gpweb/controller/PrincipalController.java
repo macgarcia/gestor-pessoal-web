@@ -113,4 +113,13 @@ public class PrincipalController {
 		this.mesSelecionado = mes;
 		return "redirect:/telaDeFinancas";
 	}
+	
+	@GetMapping(value = "/sair")
+	public String logout(HttpSession session) {
+		session.setAttribute("Usuario", null);
+		this.rendas = null;
+		this.dividas = null;
+		this.mesSelecionado = null;
+		return "redirect:/";
+	}
 }

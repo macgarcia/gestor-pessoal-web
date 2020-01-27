@@ -50,7 +50,7 @@ public class RendaController {
 	@GetMapping(value = "/telaAtualizarRenda")
 	public ModelAndView telaAtualizarRenda() {
 		ModelAndView mv = new ModelAndView("telaAtualizarRenda");
-		mv.addObject("renda", renda);
+		mv.addObject("renda", this.renda);
 		mv.addObject("idUsuario", this.usuario.getId());
 		return mv;
 	}

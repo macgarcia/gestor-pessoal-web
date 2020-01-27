@@ -38,80 +38,78 @@ function moeda(a, e, r, t) {
 }
 
 var btnSalvar = document.querySelector("#salvar");
-var idUsuario;
-
-//function formatarValor() {
-//	var valor = document.getElementById("valor").value;
-//	valor = valor.replace(",", ".");
-//	if (isNaN(valor)) {
-//		alert("Existem caracteres no campo valor");
-//		document.getElementById("valor").value = "";
-//		return;
-//	}
-//	document.getElementById("valor").value = valor;
-//}
-
+var idUsuario = "";
+var divida;
 
 function iniciar() {
-	var renda = new Object();
-	recuperarValores(renda);
-	if (validar(renda)) {
-		consumirApi(renda);
+	divida = new Object();
+	recuperarValores();
+	if (validar()) {
+		consumirApi();
 	}
 }
 
-function recuperarValores(renda) {
-	renda.id = document.getElementById("idRenda").value;
-	renda.descr = document.getElementById("descr").value;
-	renda.data = document.getElementById("data").value;
-	renda.valor = document.getElementById("valor").value;
-	renda.valor = renda.valor.replace(",", ".");
-	
+function recuperarValores() {
+	if (document.getElementById("idDivida").value == 0) {
+		divida.id = null;
+	} else {
+		divida.id = document.getElementById("idDivida").value;
+	}
+	divida.descr = document.getElementById("descr").value;
+	divida.data = document.getElementById("data").value;
+	divida.valor = document.getElementById("valor").value;
+	var check = document.getElementById("situacao").checked;
+	if (check) {
+		divida.situacao = 0;
+	} else {
+		divida.situacao = 1;
+	}
+	divida.valor = divida.valor.replace(",", ".");
 	idUsuario = document.getElementById("idUsuario").value;
-	if (renda.id == 0) {
-		renda.id = null;
-	}
 }
 
-function validar(renda) {
-	if (renda.descr.length == 0) {
+function validar() {
+	if (divida.descr.length == 0) {
 		alert("Informe a descrição");
 		return false;
-	} else if (renda.data.length == 0) {
+	} else if (divida.data.length == 0) {
 		alert("Informe a data");
 		return false;
-	} else if (renda.valor.length == 0) {
+	} else if (divida.valor.length == 0) {
 		alert("Informe o valor");
 		return false;
-	} else if (isNaN(renda.valor)) {
-		alert("Existem caracteres no campo valor");
+	} else if (isNaN(divida.valor)) {
+		alert("Valor informado é inválido");
 		return false;
+	} else if (divida.valor <= 0) {
+		alert("Valor informado deve ser maior que 0(zero)");
+		return false;
+	} else {
+		return true;
 	}
-	return true;
 }
 
-function consumirApi(renda) {
+function consumirApi() {
 	var msg = "";
-	if (renda.id != null) {
-		msg = "Renda atualizada com sucesso";
+	var endPoint = "https://api-gp.herokuapp.com/divida/novaDivida/" + idUsuario;
+	if (divida.id != null) {
+		msg = "Dívida atualizada com sucesso";
 	} else {
-		msg = "Renda salva com sucesso";
+		msg = "Dívida salva com sucesso";
 	}
 	var request = new XMLHttpRequest();
-	var endPoint = "https://api-gp.herokuapp.com/renda/novaRenda/" + idUsuario;
 	request.open("POST", endPoint, true);
 	request.setRequestHeader('Content-type','application/json; charset=utf-8');
 	request.onload = function() {
-	    if (request.status == 200) {
-	    	var renda = JSON.parse(request.responseText);
-	    	alert(msg);
-	    	window.location.replace("/financas");
-	    } else {
-	    	alert("Erro ao savar...");
-	    }
+		if (request.status == 200) {
+			alert(msg);
+		} else {
+			alert("Erro ao salvar...");
+		}
+		window.location.replace("/financas");
 	}
-	var json = JSON.stringify(renda);
-	request.send(json);
+	var json = JSON.stringify(divida);
+	request.send(json);	
 }
 
 btnSalvar.onclick = iniciar;

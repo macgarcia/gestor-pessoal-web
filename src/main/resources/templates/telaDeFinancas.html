@@ -15,7 +15,7 @@
 </head>
 <body>
 
-	<h2 style="background-color: #FF4500; margin: 0;
+	<h2 style="background-color: #FFA500; margin: 0;
 		text-align: right; color: white; 
 		font-family: sans-serif; font-style: italic;">
 		Financeiro
@@ -92,18 +92,18 @@
 						<tbody>
 							<tr th:each="divida : ${dividas}">
 								<td><a href="#" style="cursor: pointer;" title="editar"
-									th:onclick="'javascript:atualizarRegistro(' + ${divida.id} + ');'">
+									th:onclick="'javascript:atualizarDivida(' + ${divida.id} + ');'">
 										<i class="material-icons" style="color: blue;">create</i>
 								</a> <a href="#" style="cursor: pointer;" title="excluir"
-									th:onclick="'javascript:excluirRegistro(' + ${divida.id} + ');'">
+									th:onclick="'javascript:excluirDivida(' + ${divida.id} + ');'">
 										<i class="material-icons" style="color: red;">delete</i>
 								</a> <span th:if="${divida.situacao == 0}"> <a style="cursor: pointer; color: green;"
 										id="icone-divida-paga" title="Paga"
-										th:onclick="'javascript: atualizarSituacaoDivida('+${divida.id}+')'"><i
+										th:onclick="'javascript:atualizarSituacaoDivida('+${divida.id}+')'"><i
 											class="material-icons">check</i> </a>
 								</span> <span th:unless="${divida.situacao == 0}"> <a style="cursor: pointer; color: red;"
 										id="icone-divida-devedor" title="Devedor"
-										th:onclick="'javascript: atualizarSituacaoDivida('+${divida.id}+')'"><i
+										th:onclick="'javascript:atualizarSituacaoDivida('+${divida.id}+')'"><i
 											class="material-icons">close</i> </a>
 								</span></td>
 								<td><span th:text="${divida.descr}"></span></td>
