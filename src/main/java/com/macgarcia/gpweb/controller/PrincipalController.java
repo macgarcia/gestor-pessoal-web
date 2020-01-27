@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
 
@@ -16,8 +17,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.macgarcia.gpweb.component.DividaComponent;
+import com.macgarcia.gpweb.component.LembreteComponent;
 import com.macgarcia.gpweb.component.RendaComponent;
 import com.macgarcia.gpweb.model.Divida;
+import com.macgarcia.gpweb.model.Lembrete;
 import com.macgarcia.gpweb.model.Mes;
 import com.macgarcia.gpweb.model.Renda;
 import com.macgarcia.gpweb.model.Usuario;
@@ -30,10 +33,14 @@ public class PrincipalController {
 	private RendaComponent rendaComponent;
 	@Autowired
 	private DividaComponent dividaComponent;
+	@Autowired
+	private LembreteComponent lembreteComponent;
 
 	private List<Renda> rendas;
 	private List<Divida> dividas;
+	private List<Lembrete> lembretes, lembretesFiltrada;
 	private Integer mesSelecionado;
+	private boolean filtroAtivo;
 
 	private Usuario getUsuarioDaSessao(HttpSession session) {
 		return (Usuario) session.getAttribute("Usuario");
@@ -74,7 +81,7 @@ public class PrincipalController {
 
 		AtomicReference<Double> vlRendas = new AtomicReference<Double>(0d);
 		this.rendas.forEach(r -> vlRendas.set(vlRendas.get() + r.getValor()));
-		
+
 		AtomicReference<Double> vlDividas = new AtomicReference<Double>(0d);
 		AtomicReference<Double> vlPago = new AtomicReference<Double>(0d);
 		this.dividas.forEach(d -> {
@@ -113,7 +120,48 @@ public class PrincipalController {
 		this.mesSelecionado = mes;
 		return "redirect:/telaDeFinancas";
 	}
-	
+
+	// -- ANOTACOES --//
+	@GetMapping(value = "/notas")
+	public String notas(HttpSession session) {
+		if (this.getUsuarioDaSessao(session) != null) {
+			return "redirect:/telaDeAnotacoes";
+		}
+		return "redirect:/";
+	}
+
+	@GetMapping(value = "/telaDeAnotacoes")
+	public ModelAndView telaDeAnotacoes(HttpSession session) {
+		Usuario usuario = this.getUsuarioDaSessao(session);
+		if (this.lembretes == null || !this.filtroAtivo) {
+			this.lembretes = this.lembreteComponent.buscarLembretesDoUsuario(usuario.getId());
+		}
+		ModelAndView mv = new ModelAndView("telaDeAnotacoes");
+		if (!this.filtroAtivo) {
+			Collections.sort(this.lembretes, Comparator.comparing(Lembrete::getId).reversed());
+			mv.addObject("lembretes", this.lembretes);
+		} else {
+			Collections.sort(this.lembretesFiltrada, Comparator.comparing(Lembrete::getId).reversed());
+			mv.addObject("lembretes", this.lembretesFiltrada);
+			this.filtroAtivo = false;
+		}
+		return mv;
+	}
+
+	@GetMapping(value = "/filtrar/{chave}")
+	public String filtrarLista(@PathVariable("chave") String chave) {
+		if (!chave.equals("null")) {
+			this.lembretesFiltrada = this.lembretes.stream()
+					.filter(l -> l.getTitulo().toLowerCase().contains(chave.toLowerCase()))
+					.collect(Collectors.toList());
+			this.filtroAtivo = true;
+		} else {
+			this.filtroAtivo = false;
+		}
+		return "redirect:/notas";
+	}
+	// -- //
+
 	@GetMapping(value = "/sair")
 	public String logout(HttpSession session) {
 		session.setAttribute("Usuario", null);
