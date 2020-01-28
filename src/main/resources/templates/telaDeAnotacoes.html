@@ -47,10 +47,12 @@
 						th:text="${lembrete.titulo}"></span>
 				</div>
 				<div class="collapsible-body">
-					<a href="#" style="cursor: pointer;" title="editar"> <i
-						class="material-icons" style="color: blue;">create</i>
-					</a> <a href="#" style="cursor: pointer;" title="excluir"> <i
-						class="material-icons" style="color: red;">delete</i>
+					<a href="#" style="cursor: pointer;" title="editar" 
+						th:onclick="'javascript:atualizarAnotacao(' + ${lembrete.id} + ');'">
+					<i class="material-icons" style="color: blue;">create</i>
+					</a> <a href="#" style="cursor: pointer;" title="excluir" 
+						th:onclick="'javascript:excluirAnotacao(' + ${lembrete.id} + ');'">
+						<i class="material-icons" style="color: red;">delete</i>
 					</a> <br> <span th:text="${lembrete.conteudo}"></span>
 				</div>
 			</li>
@@ -67,5 +69,6 @@
 	</script>
 	<script type="text/javascript" src="materialize/js/materialize.min.js"></script>
 	<script type="text/javascript" src="js/script.js"></script>
+	<script type="text/javascript" src="js/TelaPrincipalController.js"></script>
 </body>
 </html>

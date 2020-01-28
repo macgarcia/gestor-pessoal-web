@@ -1,19 +1,19 @@
 function mesSelecionado() {
-  var cod = document.getElementById("mes").value;
-  url = "/selecionarMes/" + cod;
-  window.location.replace(url);
+	var cod = document.getElementById("mes").value;
+	url = "/selecionarMes/" + cod;
+	window.location.replace(url);
 }
 
-//-- Atualizar Renda --//
+// -- Atualizar Renda --//
 function atualizarRenda(id) {
 	var request = new XMLHttpRequest();
 	var endPoint = "https://api-gp.herokuapp.com/renda/buscarRendaPorId/" + id;
 	request.open("GET", endPoint, true);
-	request.setRequestHeader('Content-type','application/json; charset=utf-8');
+	request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
 	request.onload = function() {
 		if (request.status == 200) {
 			var json = JSON.parse(request.responseText);
-			var url = "/updateRenda/"+ encodeURI(JSON.stringify(json));
+			var url = "/updateRenda/" + encodeURI(JSON.stringify(json));
 			window.location.replace(url);
 		}
 	}
@@ -43,13 +43,14 @@ function excluirRenda(id) {
 // -- Atualizar Divida //
 function atualizarDivida(id) {
 	var request = new XMLHttpRequest();
-	var endPoint = "https://api-gp.herokuapp.com/divida/buscarDividaPorId/" + id;
+	var endPoint = "https://api-gp.herokuapp.com/divida/buscarDividaPorId/"
+			+ id;
 	request.open("GET", endPoint, true);
-	request.setRequestHeader('Content-type','application/json; charset=utf-8');
+	request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
 	request.onload = function() {
 		if (request.status == 200) {
 			var json = JSON.parse(request.responseText);
-			var url = "/updateDivida/"+ encodeURI(JSON.stringify(json));
+			var url = "/updateDivida/" + encodeURI(JSON.stringify(json));
 			window.location.replace(url);
 		}
 	}
@@ -80,7 +81,8 @@ function excluirDivida(id) {
 function atualizarSituacaoDivida(id) {
 	if (confirm("Deseja alterar a situação da divida selecionada?")) {
 		var request = new XMLHttpRequest();
-		var endPoint = "https://api-gp.herokuapp.com/divida/atualizarSituacao/" + id;
+		var endPoint = "https://api-gp.herokuapp.com/divida/atualizarSituacao/"
+				+ id;
 		request.open("PUT", endPoint, true);
 		request.onload = function() {
 			if (request.status == 200) {
@@ -89,6 +91,45 @@ function atualizarSituacaoDivida(id) {
 				alert("Erro ao atualizar a situação");
 			}
 			window.location.replace("/financas");
+		}
+		request.send();
+	}
+}
+// -- //
+
+// -- Atualizar anotação -- //
+function atualizarAnotacao(id) {
+	var request = new XMLHttpRequest();
+	var endPoint = "http://api-gp.herokuapp.com/lembrete/buscarLembrete/" + id;
+	request.open("GET", endPoint, true);
+	request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+	request.onload = function() {
+		if (request.status == 200) {
+			var json = JSON.parse(request.responseText);
+			json.conteudo = json.conteudo.replace(/\r?\n/g, " ");
+			var url = "/updateLembrete/" + encodeURI(JSON.stringify(json));
+			window.location.replace(url);
+		} else {
+			alert("Anotação não encontrada...");
+		}
+	}
+	request.send();
+}
+// -- //
+
+// -- Exclir anotação -- //
+function excluirAnotacao(id) {
+	if (confirm("Deseja excluir a anotação selecionada?")) {
+		var request = new XMLHttpRequest();
+		var endPoint = "https://api-gp.herokuapp.com/lembrete/apagarLembrete/" + id;
+		request.open("DELETE", endPoint, true);
+		request.onload = function() {
+			if (request.status == 200) {
+				alert("Anotação excluída com sucesso");
+			} else {
+				alert("Erro ao excluir a anotação...");
+			}
+			window.location.replace("/notas");
 		}
 		request.send();
 	}
