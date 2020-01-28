@@ -10,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 import com.macgarcia.gpweb.model.Divida;
 import com.macgarcia.gpweb.model.Usuario;
+import com.macgarcia.gpweb.util.Ferramentas;
 
 @Controller
 public class DividaController {
@@ -43,6 +44,8 @@ public class DividaController {
 		this.getUsuarioDaSessao(session);
 		if (this.usuario != null) {
 			this.divida = new Gson().fromJson(json, Divida.class);
+			String descr = new Ferramentas().decodificar(this.divida.getDescr());
+			this.divida.setDescr(descr);
 			return "redirect:/telaAtualizarDivida";
 		}
 		return "redirect:/";

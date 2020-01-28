@@ -10,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 import com.macgarcia.gpweb.model.Renda;
 import com.macgarcia.gpweb.model.Usuario;
+import com.macgarcia.gpweb.util.Ferramentas;
 
 @Controller
 public class RendaController {
@@ -42,6 +43,8 @@ public class RendaController {
 		this.getUsuarioDaSessao(session);
 		if(this.usuario != null) {
 			this.renda = new Gson().fromJson(json, Renda.class);
+			String descr = new Ferramentas().decodificar(this.renda.getDescr());
+			this.renda.setDescr(descr);
 			return "redirect:/telaAtualizarRenda";
 		}
 		return "redirect:/";

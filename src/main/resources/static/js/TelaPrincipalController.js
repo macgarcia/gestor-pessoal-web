@@ -13,6 +13,7 @@ function atualizarRenda(id) {
 	request.onload = function() {
 		if (request.status == 200) {
 			var json = JSON.parse(request.responseText);
+			json.descr = escape(json.descr);
 			var url = "/updateRenda/" + encodeURI(JSON.stringify(json));
 			window.location.replace(url);
 		}
@@ -50,6 +51,7 @@ function atualizarDivida(id) {
 	request.onload = function() {
 		if (request.status == 200) {
 			var json = JSON.parse(request.responseText);
+			json.descr = escape(json.descr);
 			var url = "/updateDivida/" + encodeURI(JSON.stringify(json));
 			window.location.replace(url);
 		}
@@ -100,13 +102,14 @@ function atualizarSituacaoDivida(id) {
 // -- Atualizar anotação -- //
 function atualizarAnotacao(id) {
 	var request = new XMLHttpRequest();
-	var endPoint = "http://api-gp.herokuapp.com/lembrete/buscarLembrete/" + id;
+	var endPoint = "https://api-gp.herokuapp.com/lembrete/buscarLembrete/" + id;
 	request.open("GET", endPoint, true);
 	request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
 	request.onload = function() {
 		if (request.status == 200) {
 			var json = JSON.parse(request.responseText);
-			json.conteudo = json.conteudo.replace(/\r?\n/g, " ");
+			//json.conteudo = json.conteudo.replace(/\r?\n/g, " ");
+			json.conteudo = escape(json.conteudo);
 			var url = "/updateLembrete/" + encodeURI(JSON.stringify(json));
 			window.location.replace(url);
 		} else {

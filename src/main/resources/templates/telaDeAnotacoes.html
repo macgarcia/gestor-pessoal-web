@@ -43,17 +43,28 @@
 		<ul class="collapsible" th:each="lembrete : ${lembretes}">
 			<li>
 				<div class="collapsible-header" style="background-color: #FFFF00">
-					<i class="material-icons">event_note</i> <span
-						th:text="${lembrete.titulo}"></span>
+					<i class="material-icons">event_note</i>
+					<span th:text="${lembrete.titulo}"></span>
 				</div>
 				<div class="collapsible-body">
 					<a href="#" style="cursor: pointer;" title="editar" 
 						th:onclick="'javascript:atualizarAnotacao(' + ${lembrete.id} + ');'">
-					<i class="material-icons" style="color: blue;">create</i>
-					</a> <a href="#" style="cursor: pointer;" title="excluir" 
-						th:onclick="'javascript:excluirAnotacao(' + ${lembrete.id} + ');'">
+						<i class="material-icons" style="color: blue;">create</i>
+					</a> 
+					<a href="#" style="cursor: pointer;" title="excluir" 
+							th:onclick="'javascript:excluirAnotacao(' + ${lembrete.id} + ');'">
 						<i class="material-icons" style="color: red;">delete</i>
-					</a> <br> <span th:text="${lembrete.conteudo}"></span>
+					</a> 
+					<br> 
+					<div class = "row">
+						<div class = "input-field col s12">
+							<textarea id="conteudo" class="materialize-textarea" disabled
+								style="color:black;"
+								th:text="*{lembrete.conteudo}" >
+							</textarea>
+		          			<label for="conteudo">Conteudo</label> 
+						</div>
+					</div>
 				</div>
 			</li>
 		</ul>

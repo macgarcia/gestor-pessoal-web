@@ -49,6 +49,7 @@ public class PrincipalController {
 	@GetMapping(value = "/gestorPessoal")
 	public String telaPrincipal(HttpSession session) {
 		if (this.getUsuarioDaSessao(session) != null) {
+			this.mesSelecionado = null;
 			return "telaPrincipal";
 		}
 		return "redirect:/";
@@ -142,7 +143,7 @@ public class PrincipalController {
 			mv.addObject("lembretes", this.lembretes);
 		} else {
 			Collections.sort(this.lembretesFiltrada, Comparator.comparing(Lembrete::getId).reversed());
-			mv.addObject("lembretes", this.lembretesFiltrada);
+			mv.addObject("lembretes", this.lembretesFiltrada);			
 			this.filtroAtivo = false;
 		}
 		return mv;

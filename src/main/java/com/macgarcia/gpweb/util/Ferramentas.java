@@ -1,8 +1,11 @@
 package com.macgarcia.gpweb.util;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -91,5 +94,16 @@ public class Ferramentas {
                 | IllegalArgumentException | InvocationTargetException e) {
         }
         return devolver;
+    }
+    
+    /***
+     * Método para decodificar caracteres especiais
+     */
+    public String decodificar(String value) {
+        try {
+            return URLDecoder.decode(value, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException ex) {
+            return value;
+        }
     }
 }

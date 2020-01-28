@@ -10,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 import com.macgarcia.gpweb.model.Lembrete;
 import com.macgarcia.gpweb.model.Usuario;
+import com.macgarcia.gpweb.util.Ferramentas;
 
 @Controller
 public class LembreteController {
@@ -40,6 +41,8 @@ public class LembreteController {
 	@GetMapping(value = "/updateLembrete/{json}")
 	public String updateNota(@PathVariable("json") String json, HttpSession session) {
 		this.lembrete = new Gson().fromJson(json, Lembrete.class);
+		String conteudo = new Ferramentas().decodificar(lembrete.getConteudo());
+		lembrete.setConteudo(conteudo);
 		return "redirect:/telaAtualizarAnotacao" ;
 	}
 	
