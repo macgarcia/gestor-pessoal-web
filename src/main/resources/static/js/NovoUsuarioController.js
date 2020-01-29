@@ -6,11 +6,28 @@ function montarJson(valor) {
 	return JSON.stringify(valor);
 }
 
+//-- Processo para exibir o load --//
+function loading() {
+	var div = document.querySelector("#loading");
+	
+	var img = document.createElement("img");
+	img.src = "/img/load.gif";
+	img.setAttribute("style", "width: 100px; height: 100px;");
+	
+	var paragrafo = document.createElement("p");
+	var msg = document.createTextNode("Carregando...");
+	paragrafo.appendChild(msg);
+	
+	div.appendChild(img);
+	div.appendChild(paragrafo);
+}
+
 
 function iniciar() {
 	var usuario = new Object();
 	recuperarDados(usuario);
 	if (validar(usuario)) {
+		loading();
 		consumirApi(usuario);
 	}
 }
