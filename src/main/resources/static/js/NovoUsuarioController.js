@@ -22,6 +22,14 @@ function loading() {
 	div.appendChild(paragrafo);
 }
 
+function removerLoading() {
+	var div = document.querySelector("#loading");
+	var img = document.getElementsByTagName('img');
+	var p = document.getElementsByTagName('p');
+	
+	div.removeChild(img[0]);
+	div.removeChild(p[0]);
+}
 
 function iniciar() {
 	var usuario = new Object();
@@ -62,6 +70,7 @@ function consumirApi(usuario) {
 	    	}
 	    	window.location.replace("/");
 	    } else {
+	    	removerLoading();
 	    	alert("Já existe um usuário com este login");
 	    }
 	}
