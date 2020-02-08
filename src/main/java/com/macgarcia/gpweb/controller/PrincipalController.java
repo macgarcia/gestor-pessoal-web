@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.macgarcia.gpweb.component.AlbumComponent;
 import com.macgarcia.gpweb.component.DividaComponent;
 import com.macgarcia.gpweb.component.LembreteComponent;
 import com.macgarcia.gpweb.component.RendaComponent;
+import com.macgarcia.gpweb.model.Album;
 import com.macgarcia.gpweb.model.Divida;
 import com.macgarcia.gpweb.model.Lembrete;
 import com.macgarcia.gpweb.model.Mes;
@@ -35,6 +37,8 @@ public class PrincipalController {
 	private DividaComponent dividaComponent;
 	@Autowired
 	private LembreteComponent lembreteComponent;
+	@Autowired
+	private AlbumComponent albumComponent;
 
 	private List<Renda> rendas;
 	private List<Divida> dividas;
@@ -160,6 +164,26 @@ public class PrincipalController {
 			this.filtroAtivo = false;
 		}
 		return "redirect:/notas";
+	}
+	// -- //
+	
+	// -- COMANDOS PARA ALBUM DE FOTOGRAFIAS -- //
+	@GetMapping(value = "/album")
+	public String albuns(HttpSession session) {
+		if (this.getUsuarioDaSessao(session) != null) {
+			return "redirect:/telaMeusAlbuns";
+		}
+		return "redirect:/";
+	}
+	
+	@GetMapping(value = "/telaMeusAlbuns")
+	public ModelAndView meusAlbuns(HttpSession session) {
+		Usuario usuario = this.getUsuarioDaSessao(session);
+		List<Album> albuns = this.albumComponent.buscarAlbuns(usuario.getId());
+		ModelAndView mv = new ModelAndView("telaMeusAlbuns");
+		mv.addObject("idUsuario", usuario.getId());
+		mv.addObject("albuns", albuns);
+		return mv;
 	}
 	// -- //
 

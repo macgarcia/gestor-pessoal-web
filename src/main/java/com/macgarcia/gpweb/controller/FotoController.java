@@ -1,0 +1,74 @@
+package com.macgarcia.gpweb.controller;
+
+import java.io.InputStream;
+
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
+import javax.ws.rs.PathParam;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.macgarcia.gpweb.component.FotoComponent;
+import com.macgarcia.gpweb.model.Foto;
+import com.macgarcia.gpweb.model.Usuario;
+
+@Controller
+public class FotoController {
+	
+	@Autowired
+	FotoComponent dao;
+	
+	private Usuario usuario;
+	private Long idAlbum;
+	
+	private void getUsuarioDaSessao(HttpSession session) {
+		this.usuario = (Usuario) session.getAttribute("Usuario");
+	}
+	
+	@GetMapping(value = "/fotosDoAlbum/{idAlbum}")
+	public String telaDeFotos(@PathVariable("idAlbum") Long idAlbum, HttpSession session) {
+		this.getUsuarioDaSessao(session);
+		if (usuario != null) {
+			this.idAlbum = idAlbum;
+			return "redirect:/minhasFotos";
+		} else {
+			return "redirect:/";
+		}
+	}
+	
+	@GetMapping(value = "/minhasFotos")
+	public ModelAndView minhasFotos() {
+		ModelAndView mv = new ModelAndView("telaMinhasFotos");
+		mv.addObject("idAlbum", this.idAlbum);
+		return mv;
+	}
+	
+	@PostMapping(value = "/upload")
+	public String uploadFoto(@PathParam("nome") String nome, @PathParam("arquivo") Part arquivo, @PathParam("tipo") String tipo) {
+		if (!nome.isEmpty() && tipo != null && !(arquivo.getSize() == 0)) {
+			try {
+				InputStream is = arquivo.getInputStream();
+				int count = 0;
+				int index = 0;
+				byte[] b = new byte[(int) arquivo.getSize()];
+				while (count < b.length && (index = is.read(b, count, b.length - count)) >= 0) {
+					count += index;
+				}
+				Foto foto = new Foto();
+				foto.setNome(nome);
+				foto.setArquivo(b);
+				foto.setTipo(tipo);
+				this.dao.salvarFoto(foto, this.idAlbum);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return "redirect:/fotosDoAlbum/" + this.idAlbum;
+	}
+
+}

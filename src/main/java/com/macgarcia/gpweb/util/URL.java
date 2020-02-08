@@ -3,6 +3,7 @@ package com.macgarcia.gpweb.util;
 public class URL {
 	
 	private static final String CAMINHO_BASE = "https://api-gp.herokuapp.com";
+	//private static final String CAMINHO_BASE = "http://localhost:9090";
 
 	public static final String NO_AR = CAMINHO_BASE + "/conf/noAr";
 
@@ -42,4 +43,11 @@ public class URL {
 	public static final String BUSCAR_CONFIGURACAO = CAMINHO_BASE + "/confUsuario/getConfUsuario";
 	public static final String PESQUISA_DIVIDAS = CAMINHO_BASE + "/divida/buscarDividaDoUsuarioPorPeriodo";
 	// -- //
+	
+	// -- SERVIÇO DE ALBUNS -- //
+	public static final String BUSCAR_ALBUNS = CAMINHO_BASE + "/album/pegarTodosOsAlbuns";
+	
+	// -- SERVIÇO DE FOTOS --//
+	//public static final String BUSCAR_FOTOS = CAMINHO_BASE + "/foto/buscarFotos";
+	public static final String SALVAR_FOTO = CAMINHO_BASE + "/foto/addNovaFoto";
 }
