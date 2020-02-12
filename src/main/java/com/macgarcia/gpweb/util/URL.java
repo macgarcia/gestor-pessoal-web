@@ -50,4 +50,5 @@ public class URL {
 	// -- SERVIÇO DE FOTOS --//
 	//public static final String BUSCAR_FOTOS = CAMINHO_BASE + "/foto/buscarFotos";
 	public static final String SALVAR_FOTO = CAMINHO_BASE + "/foto/addNovaFoto";
+	public static final String BUSCAR_UNICA_FOTO = CAMINHO_BASE + "/foto/buscarFoto";
 }

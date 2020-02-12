@@ -1,7 +1,10 @@
 package com.macgarcia.gpweb.controller;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import javax.ws.rs.PathParam;
@@ -16,7 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.macgarcia.gpweb.component.FotoComponent;
 import com.macgarcia.gpweb.model.Foto;
 import com.macgarcia.gpweb.model.Usuario;
-
+	
 @Controller
 public class FotoController {
 	
@@ -50,7 +53,8 @@ public class FotoController {
 	
 	@PostMapping(value = "/upload")
 	public String uploadFoto(@PathParam("nome") String nome, @PathParam("arquivo") Part arquivo, @PathParam("tipo") String tipo) {
-		if (!nome.isEmpty() && tipo != null && !(arquivo.getSize() == 0)) {
+		boolean valido = this.validarArquivo(arquivo.getContentType(), tipo);
+		if (!nome.isEmpty() && tipo != null && !(arquivo.getSize() == 0) && valido) {
 			try {
 				InputStream is = arquivo.getInputStream();
 				int count = 0;
@@ -69,6 +73,38 @@ public class FotoController {
 			}
 		}
 		return "redirect:/fotosDoAlbum/" + this.idAlbum;
+	}
+	
+	private boolean validarArquivo(String extensao, String tipo) {
+		int index = extensao.indexOf("/");
+		String tipoFoto = extensao.substring(index + 1);
+		if (tipoFoto.equalsIgnoreCase(tipo)) {
+			return true;
+		}
+		return false;
+	}
+	
+	@GetMapping(value = "/downloadFoto/{idFoto}")
+	public String pegarArquivo(@PathVariable("idFoto") Long idFoto, HttpServletResponse response) {
+		Foto a = this.dao.buscarUnicaFoto(idFoto);
+		if (a != null) {
+			if (a.getArquivo() != null) {
+				byte[] arquivo = a.getArquivo();
+		        response.setContentType("image/" + a.getTipo().toLowerCase());
+		        response.setHeader("Content-Disposition", "attachment; filename=Foto." + a.getTipo().toLowerCase());
+				try {
+					OutputStream output = response.getOutputStream();
+					output.write(arquivo);
+					output.flush();
+					output.close();
+					return null;
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+
+		}
+		return "redirect:/";
 	}
 
 }
